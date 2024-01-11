@@ -1,4 +1,5 @@
 import express from "express";
+import { rutas } from "./utils/rutas.js";
 
 console.log("-------------------------");
 console.log("Bienvenido a mi app");
@@ -6,6 +7,11 @@ console.log("Bienvenido a mi app");
 const port = 3000; //Puerto para recibir peticiones
 
 const app = express(); //Nos trae la app
+
+//Configurar ejs
+app.set('view engine', 'ejs'); //El sistema de hacer las vistas es ejs.
+app.set('views', rutas.views); //Carpeta donde se encuentran las vistas.
+
 
 //Controladores para responder a las peticiones por HTTP
 
