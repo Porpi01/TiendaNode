@@ -16,7 +16,7 @@ app.set('views', rutas.views); //Carpeta donde se encuentran las vistas.
 //Controladores para responder a las peticiones por HTTP
 
 app.get('/saludo', (request, response, next) => {
-    response.render("prueba"); //Renderiza la vista prueba.ejs
+    response.render("prueba", {nombre: "Monica"}); //Renderiza la vista prueba.ejs
 });
 
 app.get('/automovil',(request, response, next) => {
