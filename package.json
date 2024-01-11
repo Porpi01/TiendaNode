@@ -5,9 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "node ./dist/app.js",
-    "build": "./node_modules/.bin/tsc",
+    "build": "./node_modules/.bin/tsc -w",
     "start": "./node_modules/.bin/nodemon ./dist/app.js"
-
   },
   "repository": {
     "type": "git",
@@ -24,8 +23,12 @@
   },
   "homepage": "https://github.com/Porpi01/TiendaNode#readme",
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/node": "^20.10.7",
     "nodemon": "^3.0.2",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
   }
 }
