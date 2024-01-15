@@ -1,5 +1,8 @@
-import express from "express";
+import express, {urlencoded}from "express"; 
+
 import { rutas } from "./utils/rutas.js";
+import { adminRouter } from "./routes/adminRoutes.js";
+import { shopRouter } from "./routes/shopRoutes.js"; 
 
 console.log("-------------------------");
 console.log("Bienvenido a mi app");
@@ -11,33 +14,27 @@ const app = express(); //Nos trae la app
 //Configurar ejs
 app.set('view engine', 'ejs'); //El sistema de hacer las vistas es ejs.
 app.set('views', rutas.views); //Carpeta donde se encuentran las vistas.
-
+app.use(urlencoded({extended: false})); //Middleware para procesar los campos que me envíen por HTTP
+//Urlencoded cuando nos llegue info de un formulario, lo que hace es que lo convierte en un objeto de JS
 
 //Controladores para responder a las peticiones por HTTP
 
-app.get('/saludo', (request, response, next) => {
-    response.render("prueba", {nombre: "Monica"}); //Renderiza la vista prueba.ejs
-});
+app.use('/admin', adminRouter); //Middleware para las rutas de admin
+app.use('/', shopRouter); //Middleware para las rutas de shop
 
-app.get('/automovil',(request, response, next) => {
-    console.log("Pasamos por el primer middleware app.get")
-    response.redirect('/coche');
-});
-
-app.use('/coche',(request, response, next) => { 
-    console.log("Peticion recibida"); 
-    next(); 
+app.use('/coche', (request, response, next) => {
+    console.log("Peticion recibida");
+    next();
 }); //Middleware; 
 
-
-app.use('/coche',(request, response, next) => { 
-    console.log("Estamos en el segundo middleware"); 
-    response.send({"message": "ok"});
+app.use('/coche', (request, response, next) => {
+    console.log("Estamos en el segundo middleware");
+    response.send({ "message": "ok" });
 }); //Middleware;
 
 app.use('/', (request, response, next) => {
-    console.log("Middleware del final");
-    response.status(404).send({"message": "Mal hecho"});
+    console.log("Ruta no encontrada");
+    response.status(404).send({ "message": "Mal hecho" });
 }); //Middleware error;
 
 
