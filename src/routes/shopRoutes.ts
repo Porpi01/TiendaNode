@@ -11,3 +11,4 @@ shopRouter.get('/saludo', (request, response, next) => {
 shopRouter.get('/', (request, response, next) => {
     response.render("shop", { pageTitle:'Tienda', path:'/', prods:[{title:'Tetera'},{title:'Moto Moto'}] });
 });
+
