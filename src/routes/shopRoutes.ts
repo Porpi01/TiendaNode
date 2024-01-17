@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import { productos } from "./adminRoutes.js";
 export const shopRouter = Router();
 
 
@@ -9,6 +10,6 @@ shopRouter.get('/saludo', (request, response, next) => {
 });
 
 shopRouter.get('/', (request, response, next) => {
-    response.render("shop", { pageTitle:'Tienda', path:'/', prods:[{title:'Tetera'},{title:'Moto Moto'}] });
+    response.render('shop', {pageTitle:'Tienda', path:'/', prods: productos});
 });
 
