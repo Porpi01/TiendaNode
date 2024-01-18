@@ -23,4 +23,7 @@ export class Product {
         return products;
     }//Devuelve el array de productos
     
+    static findById(productId: number){
+        return products.find(p => p.id === productId);
+    }
 }
