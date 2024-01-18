@@ -1,14 +1,14 @@
 import { Router } from "express";
+import { getAddProduct, getProducts, postAddProduct } from "../ controllers/adminCtrl.js";
 
-import { getAddProduct, postAddProduct } from "../ controllers/adminCtrl.js";
+
 
 export const adminRouter = Router();
 
 
 //todsas las rutas que lleguen aquí empiezan por /admin
 
-adminRouter.get('/add-product', getAddProduct );
-
-
+adminRouter.get('/products', getProducts );
+adminRouter.get('/add-product', getAddProduct);
 adminRouter.post('/add-product', postAddProduct);
 

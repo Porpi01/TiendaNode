@@ -6,14 +6,18 @@ export class Product {
         public title: string,
         public imageUrl: string,
         public description: string,
-        public price: number
+        public price: number,
+        public id?: number
         ){
 
     }
 
     save(){
+       if(!this.id){
+        this.id = Math.round(Math.random()*1000000);
         products.push(this);
-    }//Guarda el producto en el array de productos
+    }
+};
     
     static fetchAll(){
         return products;

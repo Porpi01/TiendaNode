@@ -12,3 +12,6 @@ export const getSaludo =(request: Request, response: Response, next: NextFunctio
     response.render("prueba", { nombre: "Monica" }); //Renderiza la vista prueba.ejs
 }
 
+export const getProducts = (req: Request, res: Response,next: NextFunction) => {  
+    res.render('shop/product-list', {pageTitle:'Lista de productos', path:'/products', prods: Product.fetchAll()});
+};

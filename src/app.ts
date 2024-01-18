@@ -27,19 +27,10 @@ app.disable('x-powered-by'); //Desactivamos la cabecera X-Powered-By
 app.use('/admin', adminRouter); //Middleware para las rutas de admin
 app.use('/', shopRouter); //Middleware para las rutas de shop
 
-app.use('/coche', (request, response, next) => {
-    console.log("Peticion recibida");
-    next();
-}); //Middleware; 
-
-app.use('/coche', (request, response, next) => {
-    console.log("Estamos en el segundo middleware");
-    response.send({ "message": "ok" });
-}); //Middleware;
 
 app.use('/', (request, response, next) => {
     console.log("Ruta no encontrada");
-    response.status(404).send({ "message": "Mal hecho" });
+    response.render('404', {pageTitle: "Error 404", path: "/404"});
 }); //Middleware error;
 
 
@@ -47,4 +38,5 @@ app.use('/', (request, response, next) => {
 // FIN
 app.listen(port); //Poner en marcha la app
 console.log("Servidor de la app en marcha");
+console.log(`Página disponible en: http://localhost:${port}`)
 
