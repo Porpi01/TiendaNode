@@ -61,9 +61,10 @@ export const postEditProduct = (req: Request, res: Response, next: NextFunction)
     res.redirect('/admin/products');
 }
 
-export const deleteProduct = (req: Request, res: Response, next: NextFunction) => {
-    const productId = +req.params.productId;
+export const postDeleteProduct = (req: Request, res: Response, next: NextFunction) => {
+    const productId = +req.body.productId;
     Product.deleteById(productId);
 
     res.redirect('/admin/products');
+    console.log("Producto borrado");
 }

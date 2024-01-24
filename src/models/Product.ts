@@ -37,9 +37,11 @@ export class Product {
     }
 
     static deleteById(productId: number) {
+        console.log('Borrando producto con id: ', productId);
         const index = products.findIndex(prod => prod.id === productId);
         if (index >= 0) {
             products.splice(index, 1);
+            console.log('Productos');
         }
     }
 

@@ -3,6 +3,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { Product } from '../models/Product.js';
+import { Cart } from '../models/cart.js';
 
 export const getIndex =(request: Request, response: Response, next: NextFunction) => {
     response.render('shop/index', {pageTitle:'Tienda', path:'/'});
@@ -28,3 +29,13 @@ export const getProductsById = (req: Request, res: Response,next: NextFunction) 
     }
 
 };
+
+export const postCart = (req: Request, res: Response,next: NextFunction) => {
+
+    const productId = +req.body.productId;
+    console.log('Añadimos al carrito el producto con id: ', productId);
+    Cart.addProduct(productId, 1);
+    res.redirect('/cart');
+}
+
+//Push de mont 
