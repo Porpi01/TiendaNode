@@ -39,10 +39,31 @@ export const getEditProduct = (req: Request, res: Response, next: NextFunction) 
     }
     const productId = +req.params.productId;
     const product = Product.findById(productId);
-    if(product){
-        res.render('admin/edit-product', { pageTitle: "Formulario", path: "/admin/add-product", editing: editMode, product: product });
-    }else{
+    if (product) {
+        res.render('admin/edit-product', {
+            pageTitle: "Formulario edición", path: "/admin/add-product", //Entrad ade la barra de navegación que vamos a sombrear
+            editing: editMode, product: product
+        });
+    } else {
         res.redirect('/products');
     }
 
 };
+
+export const postEditProduct = (req: Request, res: Response, next: NextFunction) => {
+    const productId = +req.body.productId;
+    const title = req.body.title;
+    const imageUrl = req.body.imageUrl;
+    const description = req.body.description;
+    const price = +req.body.price;
+    const updatedProduct = new Product(title, imageUrl, description, price, productId);
+    updatedProduct.save();
+    res.redirect('/admin/products');
+}
+
+export const deleteProduct = (req: Request, res: Response, next: NextFunction) => {
+    const productId = +req.params.productId;
+    Product.deleteById(productId);
+
+    res.redirect('/admin/products');
+}

@@ -23,7 +23,7 @@ export const getProductsById = (req: Request, res: Response,next: NextFunction) 
         res.render('shop/product-detail', {pageTitle:product.title, path:'/products', product: product});
 
     }else{
-        res.status(404).render('404.ejs');
+        res.status(404).render('404.ejs', {pageTitle:'Page not found', path:''});
 
     }
 
