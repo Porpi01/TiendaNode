@@ -12,22 +12,30 @@
             <table>
                 <caption>Cart Items</caption>
                 <tr>
-                    <th>ID</th><th>Title</th><th>Price</th><th>Qty</th><th>Subtotal</th><th>Action</th>
+                    <th>ID</th><th>Title</th><th>Price</th><th>Quantity</th><th>Subtotal</th><th>Action</th>
                 </tr>
             <% 
             for (const it of items){
-                acumulado += it.price*it.qty;
+                acumulado += it.price*it.quantity;
             %>
                 <tr>
                     <td ><%= it.id %></td>
                     <td><%= it.title %></td>
                     <td><%= it.price %></td>
-                    <td><%= it.qty %></td>
-                    <td><%= it.price*it.qty %></td>
+                    <td><%= it.quantity %></td>
+                    <td><%= it.price*it.quantity %></td>
                     <td>
                         <form action="/cart-delete-item" method="post">
                             <input type="hidden" value="<%= it.id %>" name="productId">
                             <button class="btn" type="submit">Delete</button>
+                        </form>
+                        <form action="/cart-increase-item" method="post">
+                            <input type="hidden" value="<%= it.id %>" name="productId">
+                            <button class="btn" type="submit">+</button>
+                        </form>
+                        <form action="/cart-decrease-item" method="post">
+                            <input type="hidden" value="<%= it.id %>" name="productId">
+                            <button class="btn" type="submit">-</button>
                         </form>
                     </td>
                 </tr>

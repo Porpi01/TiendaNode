@@ -23,10 +23,8 @@ export class Product {
             }
 
         }
-    };
+    }
 
-
-    
 
     static fetchAll() {
         return products;
@@ -45,4 +43,13 @@ export class Product {
         }
     }
 
+    static deletebyproductId(productId: number)
+{
+    console.log('entra en deletebyproductId');
+    const index = products.findIndex(p => p.id === productId);
+    if (index >= 0) {
+       products.splice(index, 1)[0];
+    }
+    
+}
 }

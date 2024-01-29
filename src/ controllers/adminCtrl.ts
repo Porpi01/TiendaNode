@@ -10,6 +10,7 @@ export const getAddProduct = (req: Request, res: Response, next: NextFunction) =
     console.log("Devolvemos el formulario para meter productos");
     res.render('admin/edit-product', { pageTitle: "Formulario", path: "/admin/add-product", editing: false });
 }
+
 export const postAddProduct = (req: Request, res: Response, next: NextFunction) => {
     const title = req.body.title;
     const imageUrl = req.body.imageUrl;

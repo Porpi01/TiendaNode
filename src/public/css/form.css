@@ -1,53 +1,23 @@
-/* Basic form styling */
-.product-form {
-    max-width: 400px;
-    margin: auto;
-}
-
 .form-control {
-    margin-bottom: 20px;
+    margin: 1rem 0;
 }
 
-label {
+.form-control label,
+.form-control input,
+.form-control textarea {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-input[type="text"],
-input[type="number"],
-textarea {
     width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    margin-bottom: 0.25rem;
 }
 
-/* Button styling */
-.btn {
-    background-color: #4caf50;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.form-control input,
+.form-control textarea {
+    border: 1px solid #a1a1a1;
+    font: inherit;
+    border-radius: 2px;
 }
 
-/* Hover effect for the button */
-.btn:hover {
-    background-color: #45a049;
-}
-
-/* Optional: Add some additional styling for better visual appeal */
-.product-form {
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Optional: Style the textarea */
-textarea {
-    height: 100px;
+.form-control input:focus,
+.form-control textarea:focus {
+    outline-color: #00695c;
 }
