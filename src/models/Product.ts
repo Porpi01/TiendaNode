@@ -48,10 +48,10 @@ export class Product {
 
 
     static async fetchAll() {
-        return await collections.products?.find().toArray(); //Devuelve un array de productos
+        return await collections.products?.find().toArray(); //Devuelve un array de productos de la base de datos
     }
 
-    static async findById(productId: number) {
+    static async findById(productId: string) {
       return await collections.products?.findOne({ _id: new ObjectId(productId) });
     }
 

@@ -15,7 +15,7 @@ const port = process.env.PORT || 3000; //Puerto donde se ejecuta la app
 
 const app = express(); //Nos trae la app
 
-connectToDatabase() //Conectar con la base de datos
+connectToDatabase() //Conectar con la base de datos y crear un usuario 
     .then(async () => {
         const user = new User("12345678A", "Mateo", "mateo@gmail.com", { calle: "Mercad Nuevo", telf: "123456789", CP: "12345" });
         await user.save()

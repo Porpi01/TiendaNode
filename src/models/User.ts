@@ -26,7 +26,7 @@ export class User {
 
     async save() { //Guardar en la base de datos el usuario 
 
-        const result1 = await collections.users?.findOne({ DNI: this.DNI });
+        const result1 = await collections.users?.findOne({ DNI: this.DNI }); //Comprobar si el usuario existe 
         if (result1) {
 
             this._id = result1._id;
