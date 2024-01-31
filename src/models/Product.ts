@@ -1,6 +1,10 @@
+import { ObjectId } from "mongodb";
+import { collections } from "../services/databaseService.js";
+
 const products: Product[] = []; //Array de productos
 
 export class Product {
+    public _id?: ObjectId;
 
     constructor(
         public title: string,
@@ -12,26 +16,43 @@ export class Product {
 
     }
 
-    save() {
-        if (!this.id) {
-            this.id = Math.round(Math.random() * 1000000);
-            products.push(this);
-        } else {
-            const index = products.findIndex(prod => prod.id === this.id);
-            if (this.id >= 0) {
-                products[index] = this;
-            }
+    /* save() {
+         if (!this.id) {
+             this.id = Math.round(Math.random() * 1000000);
+             products.push(this);
+         } else {
+             const index = products.findIndex(prod => prod.id === this.id);
+             if (this.id >= 0) {
+                 products[index] = this;
+             }
+ 
+         }
+     }*/
 
+    async save() {
+
+        if (this._id) {
+            const result = await collections.products?.updateOne({ _id: this._id }, { $set: this });
+            result
+                ? console.log(`Producto actualizado con éxito con el id: ${this._id}`)
+                : console.log("Error al actualizar el producto");
+            return;
         }
+
+        const result = await collections.products?.insertOne(this);
+        result
+            ? console.log(`Producto creado con éxito con el id: ${result.insertedId}`)
+            : console.log("Error al crear el producto");
+
     }
 
 
-    static fetchAll() {
-        return products;
-    }//Devuelve el array de productos
+    static async fetchAll() {
+        return await collections.products?.find().toArray(); //Devuelve un array de productos
+    }
 
-    static findById(productId: number) {
-        return products.find(p => p.id === productId);
+    static async findById(productId: number) {
+      return await collections.products?.findOne({ _id: new ObjectId(productId) });
     }
 
     static deleteById(productId: number) {
@@ -43,13 +64,12 @@ export class Product {
         }
     }
 
-    static deletebyproductId(productId: number)
-{
-    console.log('entra en deletebyproductId');
-    const index = products.findIndex(p => p.id === productId);
-    if (index >= 0) {
-       products.splice(index, 1)[0];
+    static deletebyproductId(productId: number) {
+        console.log('entra en deletebyproductId');
+        const index = products.findIndex(p => p.id === productId);
+        if (index >= 0) {
+            products.splice(index, 1)[0];
+        }
+
     }
-    
-}
 }

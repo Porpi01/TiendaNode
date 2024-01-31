@@ -16,7 +16,7 @@ export const getSaludo =(request: Request, response: Response, next: NextFunctio
 export const getProducts = (req: Request, res: Response,next: NextFunction) => {  
     res.render('shop/product-list', {pageTitle:'Lista de productos', path:'/products', prods: Product.fetchAll()});
 };
-
+/*
 export const getProductsById = (req: Request, res: Response,next: NextFunction) => {  
     const productId = +req.params.productId;
     const product = Product.findById(productId);
@@ -29,6 +29,8 @@ export const getProductsById = (req: Request, res: Response,next: NextFunction) 
     }
 
 };
+*/
+/*
 
 export const getCart = (req: Request, res: Response, next: NextFunction) => {
     const ci = Cart.getCart();
@@ -49,7 +51,7 @@ export const getCart = (req: Request, res: Response, next: NextFunction) => {
         pageTitle: 'Carro de la compra',
         items: items
     });
-}
+}*/
 
 export const postCart = (req: Request, res: Response,next: NextFunction) => {
 
