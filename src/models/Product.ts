@@ -14,6 +14,10 @@ export class Product {
         public id?: number
     ) {
 
+        if(id) {
+            this._id = new ObjectId(id);
+        }
+
     }
 
     /* save() {
@@ -37,13 +41,14 @@ export class Product {
                 ? console.log(`Producto actualizado con éxito con el id: ${this._id}`)
                 : console.log("Error al actualizar el producto");
             return;
+        } else {
+
+            const result = await collections.products?.insertOne(this);
+            result
+                ? console.log(`Producto creado con éxito con el id: ${result.insertedId}`)
+                : console.log("Error al crear el producto");
+
         }
-
-        const result = await collections.products?.insertOne(this);
-        result
-            ? console.log(`Producto creado con éxito con el id: ${result.insertedId}`)
-            : console.log("Error al crear el producto");
-
     }
 
 
@@ -52,7 +57,7 @@ export class Product {
     }
 
     static async findById(productId: string) {
-      return await collections.products?.findOne({ _id: new ObjectId(productId) });
+        return await collections.products?.findOne({ _id: new ObjectId(productId) });
     }
 
     static deleteById(productId: number) {

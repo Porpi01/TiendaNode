@@ -7,20 +7,29 @@ interface address {
     CP: string,
 }
 
+export interface CartItem {
+    pid: ObjectId;
+    quantity: number;
+}
+
+
 export class User {
 
     public _id?: ObjectId;
+    public cart: CartItem[] = [];
 
     constructor(
         public DNI: string,
         public name: string,
         public mail: string,
         public contacto: address,
+        cart?: CartItem[],
         id?: string
 
     ) {
         if (id) {
             this._id = new ObjectId(id);
+            cart ? this.cart = cart : this.cart = [];
         }
     }
 
@@ -44,5 +53,59 @@ export class User {
 
     static async fetchById(id: string) {
         return await collections.users?.findOne({ _id: new ObjectId(id) });
+    }
+
+    async addToCart(id: string) {
+        const index = this.cart.findIndex(c => c.pid.toHexString() === id); //Comprobar si el producto ya está en el carrito
+        if (index >= 0) {
+            this.cart[index].quantity += 1;
+        } else {
+            const prodId = new ObjectId(id);
+            this.cart.push({ pid: prodId, quantity: 1 });
+        }
+        return await collections.users?.updateOne({ _id: this._id }, { $set: { cart: this.cart } });
+    }
+
+    async getCart() {
+
+        const prodIds = this.cart.map(ci => ci.pid);
+        const products = await collections.products?.find({ _id: { $in: prodIds } }).toArray();
+        return products?.map(p => {
+
+            const quantity = this.cart.find(ci => p._id?.toHexString() === ci.pid.toHexString())?.quantity; //Añadir la cantidad de productos al carrito
+            return {
+                _id: p._id,
+                title: p.title,
+                price: p.price,
+                quantity: quantity
+
+            }
+        })
+    }
+
+    //Borrar un producto del carrito
+    async deleteCartItem(id: string) {
+        const index = this.cart.findIndex(c => c.pid.toHexString() === id);
+        if (index >= 0) {
+            this.cart.splice(index, 1);
+            return  await collections.users?.updateOne({ _id: this._id }, { $set: { cart: this.cart } });
+        }
+
+    }
+
+    async decreaseCartItem(id: string) {
+
+        const index = this.cart.findIndex(c => c.pid.toHexString() === id);
+        if (index >= 0) {
+            const quantity = this.cart[index].quantity;
+            if (quantity == 1) {
+                await this.deleteCartItem(id);
+            } else {
+                this.cart[index].quantity -= 1;
+            }   return  await collections.users?.updateOne({ _id: this._id }, { $set: { cart: this.cart } });
+
+        } else{
+            return;
+        }
     }
 }

@@ -4,7 +4,7 @@ import * as dotenv from "dotenv";
 import { rutas } from "./utils/rutas.js";
 import { adminRouter } from "./routes/adminRoutes.js";
 import { shopRouter } from "./routes/shopRoutes.js";
-import { connectToDatabase } from "./services/databaseService.js";
+import { collections, connectToDatabase } from "./services/databaseService.js";
 import { User } from "./models/User.js";
 
 console.log("-------------------------");
@@ -36,6 +36,12 @@ connectToDatabase() //Conectar con la base de datos y crear un usuario
         app.use(express.static(rutas.public)); //Middleware para servir ficheros estáticos de public
         app.disable('x-powered-by'); //Desactivamos la cabecera X-Powered-By
 
+        //Middleware para cargar el usuario en la request
+        app.use(async (request, response, next) => { 
+            const user = await collections.users?.findOne({ DNI: '12345678A' });
+            request.body.user = new User(user!.DNI, user!.name, user!.mail, user!.contacto, user!.cart, user!._id.toHexString());
+            next();
+        });
 
 
         //Controladores para responder a las peticiones por HTTP
