@@ -10,6 +10,7 @@ import { User } from '../models/User.js';
 export const collections: {
     products?: mongoDB.Collection<Product>;
     users?: mongoDB.Collection<User>;
+    orders?: mongoDB.Collection<Orders>;
 } = {};
 
 export async function connectToDatabase() {
@@ -21,9 +22,10 @@ export async function connectToDatabase() {
 
     collections.products = db.collection<Product>(process.env.PRODUCT_COLLECTION!); // Seleccionar la colección de productos
     collections.users = db.collection<User>(process.env.USER_COLLECTION!); // Seleccionar la colección de usuarios
-    
+    collections.orders = db.collection<any>(process.env.ORDER_COLLECTION!); // Seleccionar la colección de pedidos
 
     console.log(`Conectado a la base de datos: ${db.databaseName} y la colección: ${collections.products.collectionName}`);
     console.log(`Conectado a la base de datos: ${db.databaseName} y la colección: ${collections.users.collectionName}`);
+    console.log(`Conectado a la base de datos: ${db.databaseName} y la colección: ${collections.orders.collectionName}`);
 
 }
