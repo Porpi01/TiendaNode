@@ -1,18 +1,18 @@
 
 import { Request, Response, NextFunction } from 'express';
 import { Product } from '../models/Product.js';
+import { Events } from "../models/Events.js";
 
 //getProducts es el nombre de la función que se ejecuta cuando se hace una petición get a /admin/products 
 export const getProducts = async (req: Request, res: Response) => {
-    res.render('admin/products', { pageTitle: 'Admin Products', path: '/admin/products', prods: await Product.fetchAll() });
-}
+    const products = await Product.fetchAll();
+    res.json({ pageTitle: 'Admin Products', path: '/admin/products', prods: products });}
 
 //getAddProduct es el nombre de la función que se ejecuta cuando se hace una petición get a /admin/add-product
 
 export const getAddProduct = (req: Request, res: Response, next: NextFunction) => {
     console.log("Devolvemos el formulario para meter productos");
-    res.render('admin/edit-product', { pageTitle: "Formulario", path: "/admin/add-product", editing: false });
-}
+    res.json({ pageTitle: "Formulario", path: "/admin/add-product", editing: false });}
 
 //postAddProduct es el nombre de la función que se ejecuta cuando se hace una petición post a /admin/add-product   
 
@@ -34,8 +34,7 @@ export const postAddProduct = async (req: Request, res: Response, next: NextFunc
         await producto.save();
 
     }
-    console.log('pasa');
-    res.redirect('/products');
+    res.json({ message: "Producto añadido" });
 
 }
 
@@ -46,8 +45,7 @@ export const getEditProduct = async (req: Request, res: Response, next: NextFunc
     console.log("Devolvemos el formulario para editar productos");
     const editMode = req.query.edit === 'true';
     if (!editMode) {
-        return res.redirect('/products');
-    }
+        return res.json({ message: "Edit mode is false, redirecting" });    }
     const productId = req.params.productId;
     const product = await Product.findById(productId);
     if (product) {
@@ -57,7 +55,7 @@ export const getEditProduct = async (req: Request, res: Response, next: NextFunc
             product: product
         });
     } else {
-        res.redirect('/products');
+        res.json({ message: "Producto no encontrado" });    
     }
 
 };
@@ -72,15 +70,55 @@ export const postEditProduct = async (req: Request, res: Response, next: NextFun
     const updatedProduct = new Product(title, imageUrl, description, price, productId);
     console.log('Producto actualizado: ', updatedProduct);
     await updatedProduct.save();
-    res.redirect('/admin/products');
+    res.json({ message: "Producto actualizado" });
 }
 
+export const deleteProduct = async (req: Request, res: Response, next: NextFunction) => {
+    const productId = req.body.productId; 
+        const deletedProduct = await Product.deleteById(productId);
+        res.json({ message: "Producto eliminado" });
+        console.log("Producto borrado");
+    }
 
-/*
-export const postDeleteProduct = (req: Request, res: Response, next: NextFunction) => {
-    const productId = +req.body.productId;
-    Product.deleteById(productId);
-
-    res.redirect('/admin/products');
-    console.log("Producto borrado");
-}*/
+    export const getEvents = async (req: Request, res: Response) => {
+        const events = await Events.fetchAll();
+        res.json({ pageTitle: 'Admin Events', path: '/admin/events', events: events });
+    };
+    
+    export const getAddEvent = (req: Request, res: Response, next: NextFunction) => {
+        console.log("Devolvemos el formulario para agregar eventos");
+        res.json({ pageTitle: "Formulario de Evento", path: "/admin/add-event", editing: false });
+    };
+    
+    export const postAddEvent = async (req: Request, res: Response, next: NextFunction) => {
+        const title = req.body.title;
+        const description = req.body.description;
+        const fecha = req.body.fecha;
+        const imageUrl = req.body.imageUrl;
+        const price = req.body.price;
+        if (req.body.title) {
+            const event = new Events(title, imageUrl, description, price, fecha);
+            await event.save();
+        }
+        res.json({ message: "Evento añadido" });
+    };
+    
+    
+    
+    export const postEditEvent = async (req: Request, res: Response, next: NextFunction) => {
+        const eventId = req.body.eventId;
+        const title = req.body.title;
+        const description = req.body.description;
+        const fecha = req.body.fecha;
+        const imageURL = req.body.imageURL;
+        const price = req.body.price;
+        const events = new Events(title, imageURL, description, price, fecha, eventId);
+        await events.save();
+        res.json({ message: "Event updated successfully" });
+    };
+    
+    export const deleteEvent = async (req: Request, res: Response, next: NextFunction) => {
+        const eventId = req.body.eventId;
+        const deletedEvent = await Events.deleteById(eventId);
+        res.json({ message: "Event deleted successfully" });
+    };

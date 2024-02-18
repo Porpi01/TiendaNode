@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAddProduct, getEditProduct, getProducts, postAddProduct, postEditProduct } from "../ controllers/adminCtrl.js";
+import { deleteEvent, deleteProduct, getAddEvent, getAddProduct, getEditProduct, getProducts, postAddEvent, postAddProduct, postEditEvent, postEditProduct } from "../ controllers/adminCtrl.js";
 
 
 
@@ -17,5 +17,11 @@ adminRouter.post('/add-product', postAddProduct); //postAddProduct es el nombre 
 adminRouter.get('/add-product/:productId', getEditProduct); //getEditProduct es el nombre de la función que se ejecuta cuando se hace una petición get a /admin/add-product
 
 adminRouter.post('/edit-product', postEditProduct); //postEditProduct es el nombre de la función que se ejecuta cuando se hace una petición post a /admin/add-product
-// adminRouter.post('/delete-product', postDeleteProduct); //postEditProduct es el nombre de la función que se ejecuta cuando se hace una petición post a /admin/add-product
+
+adminRouter.post('/delete-product', deleteProduct); //postEditProduct es el nombre de la función que se ejecuta cuando se hace una petición post a /admin/add-product
  
+adminRouter.get('/add-event', getAddEvent);
+
+adminRouter.post('/add-event', postAddEvent);
+adminRouter.post('/edit-event', postEditEvent);
+adminRouter.post('/delete-event', deleteEvent);

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteCartItem, getCart, getIndex, getProducts, getProductById, postCart, postCartDecreaseItem, postCartIncreaseItem } from "../ controllers/shopCtrl.js";
+import { deleteCartItem, getCart, getIndex, getProducts, getProductById, postCart, postCartDecreaseItem, postCartIncreaseItem, getOrders, getCheckOut} from "../ controllers/shopCtrl.js";
 
 
 /*import { deleteCartItem, getCart, getIndex, getProducts, getProductsById, getSaludo, postCart, postCartDecreaseItem, postCartIncreaseItem } from "../ controllers/shopCtrl.js";
@@ -17,4 +17,6 @@ shopRouter.post('/cart-delete-item', deleteCartItem );
 
 shopRouter.post('/cart-increase-item',postCartIncreaseItem);
 shopRouter.post('/cart-decrease-item',postCartDecreaseItem);
+shopRouter.get('/orders', getOrders);
+shopRouter.get('/checkout', getCheckOut);
 

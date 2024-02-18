@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import { collections } from "../services/databaseService.js";
+import { Order } from "./Orders.js";
 
 interface address {
     calle: string,
@@ -88,7 +89,7 @@ export class User {
         const index = this.cart.findIndex(c => c.pid.toHexString() === id);
         if (index >= 0) {
             this.cart.splice(index, 1);
-            return  await collections.users?.updateOne({ _id: this._id }, { $set: { cart: this.cart } });
+            return await collections.users?.updateOne({ _id: this._id }, { $set: { cart: this.cart } });
         }
 
     }
@@ -102,10 +103,41 @@ export class User {
                 await this.deleteCartItem(id);
             } else {
                 this.cart[index].quantity -= 1;
-            }   return  await collections.users?.updateOne({ _id: this._id }, { $set: { cart: this.cart } });
+            } return await collections.users?.updateOne({ _id: this._id }, { $set: { cart: this.cart } });
 
-        } else{
+        } else {
             return;
         }
     }
+
+    async getOrders() {
+        return await collections.orders?.find({ 'user._id': this._id }).toArray();
+    }
+
+    async addOrder() {
+        if (this.cart.length > 0 && this._id) {
+            const prodsId = this.cart.map(ci => ci.pid); //Obtener los ids de los productos del carrito 
+            const products = await collections.products?.find({ _id: { $in: prodsId } }).toArray();
+            if (products) {
+                const items = products.map(p => {
+                    return {
+                        product: p,
+                        quantity: this.cart.find(ci => ci.pid.toHexString() === p._id.toHexString())!.quantity
+                    }
+                })
+            const time = new Date();
+            this.cart = [];
+            const result = await collections.users!.updateOne({ _id: this._id }, { $set: { cart:[]} });
+            result
+                ? console.log(`Pedido creado con éxito con el id: ${result}`)
+                : console.log("Error al crear el pedido");
+                const newOrder: Order = {user: this, date:time , items: items};
+                return await collections.orders?.insertOne(newOrder);
+
+        } else {
+            return null;
+        }
+    }
+}
+
 }

@@ -9,7 +9,9 @@ export interface OrderItem {
 }
 
 export interface Order {
+    _id?: string,
     date: Date;
     user: User;
     items: OrderItem[];
 }
+
